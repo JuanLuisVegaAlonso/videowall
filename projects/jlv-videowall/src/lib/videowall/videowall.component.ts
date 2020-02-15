@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CellConfig } from '../model/cell-config';
 import { videowallConfig } from '../mocks/cell-config';
 import { ImageService } from '../image.service';
@@ -12,7 +12,7 @@ import { JlvVideowallService } from './jlv-videowall.service';
     JlvVideowallService
   ]
 })
-export class VideowallComponent implements OnInit {
+export class VideowallComponent implements OnInit, OnChanges {
 
   imageTest: string;
   @Input() videowallConfig: CellConfig[][] = videowallConfig;
@@ -24,6 +24,12 @@ export class VideowallComponent implements OnInit {
     this.imageService.getPlateImageBase64("sadasd", new Date()).subscribe(image => this.imageTest = image);
   }
 
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.videowallConfig && !changes.videowallConfig.firstChange) {
+      this.videowallService.updateConfig(this.videowallConfig);
+    }
+  }
   get videowall$() {
     return this.videowallService.videowall$;
   }

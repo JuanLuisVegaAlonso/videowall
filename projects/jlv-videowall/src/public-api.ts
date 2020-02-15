@@ -4,3 +4,4 @@
 
 export * from './lib/jlv-videowall.module';
 export * from './lib/videowall/videowall.component';
+export * from './lib/model/cell-config';
