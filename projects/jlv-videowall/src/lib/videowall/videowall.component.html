@@ -1,0 +1,7 @@
+<div *ngFor="let columnConfigConfig of videowall$" class="column">
+    <ng-container *ngFor="let cellConfig$ of columnConfigConfig">
+        <div class="cell" *ngIf="(cellConfig$ | async) as cellConfig" [ngStyle]="{'background-image': 'url('+ cellConfig.image + ')'}">
+            <span class="plate">{{cellConfig.currentPlate }}</span>
+        </div>
+    </ng-container>
+</div>

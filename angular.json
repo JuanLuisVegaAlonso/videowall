@@ -12,7 +12,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "jlv",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -120,6 +120,46 @@
             "production": {
               "devServerTarget": "videowall:serve:production"
             }
+          }
+        }
+      }
+    },
+    "jlv-videowall": {
+      "projectType": "library",
+      "root": "projects/jlv-videowall",
+      "sourceRoot": "projects/jlv-videowall/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/jlv-videowall/tsconfig.lib.json",
+            "project": "projects/jlv-videowall/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/jlv-videowall/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/jlv-videowall/src/test.ts",
+            "tsConfig": "projects/jlv-videowall/tsconfig.spec.json",
+            "karmaConfig": "projects/jlv-videowall/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/jlv-videowall/tsconfig.lib.json",
+              "projects/jlv-videowall/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }

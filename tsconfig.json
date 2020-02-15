@@ -17,7 +17,13 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "jlv-videowall": [
+        "dist/jlv-videowall/jlv-videowall",
+        "dist/jlv-videowall"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
