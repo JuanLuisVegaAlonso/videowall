@@ -19,6 +19,8 @@ export const videowallConfig: CellConfig[][] = [
     {
         plateConfig: [{
             plate: '1234 DDD'
+        },{
+            plate: '1234 FFF'
         }]
     }],
     [
@@ -65,4 +67,43 @@ export const videowallConfig: CellConfig[][] = [
             }]
         }     
     ]
-]
+];
+
+export const smallVideowallConfig = [
+    [{
+        plateConfig: [{
+            plate: '1234 AAA'
+        }]
+    },
+    {
+        plateConfig: [{
+            plate: '1234 DDD'
+        },{
+            plate: '1234 FFF'
+        }]
+    }],
+    [
+        {
+            plateConfig: [{
+                plate: '4321 AAA'
+            }]
+        },
+        {
+            plateConfig: [{
+                plate: '4321 BBB'
+            }]
+        }    
+    ],
+    [
+        {
+            plateConfig: [{
+                plate: '9876 AAA'
+            }]
+        },
+        {
+            plateConfig: [{
+                plate: '9876 BBB'
+            }]
+        }    
+    ]
+];
