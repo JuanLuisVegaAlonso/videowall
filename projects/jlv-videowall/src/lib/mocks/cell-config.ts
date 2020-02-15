@@ -19,6 +19,8 @@ export const videowallConfig: CellConfig[][] = [
     {
         plateConfig: [{
             plate: '1234 DDD'
+        },{
+            plate: '1234 FFF'
         }]
     }],
     [
