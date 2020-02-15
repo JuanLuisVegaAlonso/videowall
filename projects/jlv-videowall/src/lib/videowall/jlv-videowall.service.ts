@@ -23,7 +23,7 @@ export class JlvVideowallService {
     for(const newConfigColumn of newConfig) {
       const column$: Observable<CellInfo>[] = [];
       for (const newConfigCell of newConfigColumn) {
-        const cell$: Observable<CellInfo> = this.getCellInfoFromCellConfig(newConfigCell)
+        const cell$: Observable<CellInfo> = this.getCellInfoFromCellConfig(newConfigCell, this.imageService, this.refreshRate)
         .pipe(
           catchError((err, original) => original),
           share()
@@ -36,7 +36,7 @@ export class JlvVideowallService {
   }
 
 
-  private getCellInfoFromCellConfig(configCell: CellConfig): Observable<CellInfo> {
+  private getCellInfoFromCellConfig(configCell: CellConfig, imageService: ImageService, refreshRate: number): Observable<CellInfo> {
     return of({image: '', currentPlate: configCell.plateConfig[0].plate, currentPlateIndex: 0}).
     pipe(
       expand(last => {
@@ -50,11 +50,11 @@ export class JlvVideowallService {
           currentPlateIndex: nextIndex,
           image: ''
         }
-        return of(cellInfo).pipe(delay(this.refreshRate * 1000));
+        return of(cellInfo).pipe(delay(refreshRate * 1000));
       }),
       switchMap(cellInfo => {
         const now = new Date();
-        return this.imageService.getPlateImageBase64(cellInfo.currentPlate, now).pipe(map(image => ({...cellInfo, image})));
+        return imageService.getPlateImageBase64(cellInfo.currentPlate, now).pipe(map(image => ({...cellInfo, image})));
       }),
     );
   }
