@@ -1,7 +1,16 @@
-<div *ngFor="let columnConfigConfig of videowall$" class="column">
-    <ng-container *ngFor="let cellConfig$ of columnConfigConfig">
-        <div class="cell frozen" *ngIf="(cellConfig$ | async) as cellConfig" [ngStyle]="{'background-image': 'url('+ cellConfig.image + ')'}">
-            <span class="plate"><i class="fas fa-cog"></i>{{cellConfig.currentPlate }}</span>
+<div *ngFor="let columnInfo of videowall$; index as column" class="column">
+    <ng-container *ngFor="let cellInfo$ of columnInfo; index as row">
+        <div class="cell" 
+            *ngIf="(cellInfo$ | async) as cellInfo; else empty"
+            [ngStyle]="{'background-image': 'url('+ cellInfo.image + ')'}"
+            (click)="onCellClick(column, row, cellInfo)"
+            [ngClass]="{'frozen': cellInfo.frozenImage}">
+            <span class="plate" (click)="onPlateClick(column, row, cellInfo); $event.stopPropagation()" [ngClass]="{'frozen': cellInfo.frozenPlate}"><i class="fas fa-cog"></i>{{cellInfo.currentPlate }}</span>
         </div>
+        <ng-template #empty>
+            <div class="cell"  
+            [ngStyle]="{'background-image': 'url('+')'}">
+            </div>
+        </ng-template>
     </ng-container>
 </div>
