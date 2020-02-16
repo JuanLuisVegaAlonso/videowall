@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CellConfig } from 'projects/jlv-videowall/src/public-api';
+import { CellConfig, VideowallConfig } from 'projects/jlv-videowall/src/public-api';
 import { videowallConfig, smallVideowallConfig } from 'projects/jlv-videowall/src/lib/mocks/cell-config';
 
 @Component({
@@ -8,7 +8,9 @@ import { videowallConfig, smallVideowallConfig } from 'projects/jlv-videowall/sr
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  videowallConfigs: CellConfig[][][] = [videowallConfig, smallVideowallConfig];
+  private  plates: string[] = ['12345 AAA', '12345 BBB', '12345 CCC', '12345 DDD', '12345 EEE', '12345 FFF', '12345 GGG', '12345 HHH', '12345 III', '12345 JJJ', '12345 KKK', '12345 LLL']
+  videowallConfigHelper: VideowallConfig;
+  videowallConfigs: CellConfig[][][] = [videowallConfig, smallVideowallConfig, new VideowallConfig(this.plates).squareVideowallConfig];
   currentSelected = 0;
   videowallConfig: CellConfig[][];
 
