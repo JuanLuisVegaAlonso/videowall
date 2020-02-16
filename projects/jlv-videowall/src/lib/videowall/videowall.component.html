@@ -5,7 +5,7 @@
             [ngStyle]="{'background-image': 'url('+ cellInfo.image + ')'}"
             (click)="onCellClick(column, row, cellInfo)"
             [ngClass]="{'frozen': cellInfo.frozenImage}">
-            <span class="plate"><i class="fas fa-cog"></i>{{cellInfo.currentPlate }}</span>
+            <span class="plate" (click)="onPlateClick(column, row, cellInfo); $event.stopPropagation()" [ngClass]="{'frozen': cellInfo.frozenPlate}"><i class="fas fa-cog"></i>{{cellInfo.currentPlate }}</span>
         </div>
         <ng-template #empty>
             <div class="cell"  

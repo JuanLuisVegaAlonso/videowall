@@ -4,6 +4,7 @@ import { ImageService } from '../image.service';
 import { CellInfo } from '../model/cell-info';
 import { Observable, of, Subject, timer } from 'rxjs';
 import { switchMap, map, expand, delay, catchError, take, shareReplay, takeUntil } from 'rxjs/operators';
+import { PlateConfig } from '../model/plate-config';
 
 @Injectable()
 export class JlvVideowallService implements OnDestroy {
@@ -65,6 +66,29 @@ export class JlvVideowallService implements OnDestroy {
     this.changeImageFreeze(column, row, false);
   }
 
+  freezePlate(column: number, row: number, plate: string) {
+    this.changePlateFreeze(column, row, plate, true);
+  }
+
+  defrostPlate(column: number, row: number, plate: string) {
+    this.changePlateFreeze(column, row, plate,false);
+  }
+
+  private changePlateFreeze(column: number, row: number, plate: string, frozen: boolean) {
+    const currentConfig: CellConfig = this.videowallConfig[column][row];
+    const newConfig: CellConfig = JSON.parse(JSON.stringify(currentConfig));
+    for (let i = 0; i < newConfig.plateConfig.length; i++) {
+      const plateConfig: PlateConfig = newConfig.plateConfig[i];
+      if (plateConfig.plate === plate) {
+        newConfig.plateConfig[i] = {...plateConfig, frozen};
+      }
+    }
+    this.videowallConfig[column][row] = newConfig;
+    this.videowall$[column][row]
+      .pipe(take(1))
+    .subscribe(cellInfo => this.videowall$[column][row] = this.getCellInfoFromCellConfig(newConfig, this.imageService, this.refreshRate, this.$newConfig, {...cellInfo, frozenPlate: frozen}));
+  }
+  
   private changeImageFreeze(column: number, row: number, frozen: boolean) {
     const currentConfig: CellConfig = this.videowallConfig[column][row];
     const newConfig: CellConfig = {...currentConfig, frozen};
@@ -79,16 +103,20 @@ export class JlvVideowallService implements OnDestroy {
     return of(initialInfo).
     pipe(
       expand(last => {
-        const platesLength = configCell.plateConfig.length;
-        let nextIndex = last.currentPlateIndex + 1;
-        if (nextIndex === platesLength) {
-          nextIndex = 0;
+        let nextIndex = last.currentPlateIndex;
+        if (!last.frozenPlate) {
+          const platesLength = configCell.plateConfig.length;
+          nextIndex = last.currentPlateIndex + 1;
+          if (nextIndex === platesLength) {
+            nextIndex = 0;
+          }
         }
         const cellInfo: CellInfo = {
           currentPlate: configCell.plateConfig[nextIndex].plate,
           currentPlateIndex: nextIndex,
           image: last.image,
-          frozenImage: configCell.frozen
+          frozenImage: last.frozenImage,
+          frozenPlate: last.frozenPlate
         }
         return of(cellInfo).pipe(delay(refreshRate * 1000));
       }),

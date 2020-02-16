@@ -35,6 +35,14 @@ export class VideowallComponent implements OnInit, OnChanges {
     }
   }
 
+  onPlateClick(column: number, row: number, currentInfo: CellInfo) {
+    if (currentInfo.frozenPlate) {
+      this.videowallService.defrostPlate(column, row, currentInfo.currentPlate);
+    } else {
+      this.videowallService.freezePlate(column, row, currentInfo.currentPlate);
+    }
+  }
+
   get videowall$() {
     return this.videowallService.videowall$;
   }
