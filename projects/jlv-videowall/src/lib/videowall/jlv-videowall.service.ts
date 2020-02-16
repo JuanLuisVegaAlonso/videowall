@@ -77,16 +77,18 @@ export class JlvVideowallService implements OnDestroy {
   private changePlateFreeze(column: number, row: number, plate: string, frozen: boolean) {
     const currentConfig: CellConfig = this.videowallConfig[column][row];
     const newConfig: CellConfig = JSON.parse(JSON.stringify(currentConfig));
+    let currentPlateIndex;
     for (let i = 0; i < newConfig.plateConfig.length; i++) {
       const plateConfig: PlateConfig = newConfig.plateConfig[i];
       if (plateConfig.plate === plate) {
         newConfig.plateConfig[i] = {...plateConfig, frozen};
+        currentPlateIndex = i;
       }
     }
     this.videowallConfig[column][row] = newConfig;
     this.videowall$[column][row]
       .pipe(take(1))
-    .subscribe(cellInfo => this.videowall$[column][row] = this.getCellInfoFromCellConfig(newConfig, this.imageService, this.refreshRate, this.$newConfig, {...cellInfo, frozenPlate: frozen}));
+    .subscribe(cellInfo => this.videowall$[column][row] = this.getCellInfoFromCellConfig(newConfig, this.imageService, this.refreshRate, this.$newConfig, {...cellInfo,currentPlate: plate, currentPlateIndex,frozenPlate: frozen}));
   }
   
   private changeImageFreeze(column: number, row: number, frozen: boolean) {

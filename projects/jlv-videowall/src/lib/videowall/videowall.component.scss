@@ -28,31 +28,60 @@
     box-sizing: border-box;
     
 }
-.plate {
-    position: absolute;
-    background-color: white;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+.current-plate {
     padding: 8px;
+    background-color: white;
     align-items: center;
     display: flex;
     border-radius: 0 0 8px 0;
+    font-weight: 600;
     i {
         cursor: pointer;
         padding-right: 4px;
     }
-    &:hover {
-        box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-
-        &.frozen {
-            box-shadow: 0px 0px 20px 2px #20dffe inset, 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);        
-        }
+    &.frozen {
+        box-shadow: 0px 0px 4px 2px #20dffe inset;
     }
 }
 
+.plate {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 0 0 8px 0;
+    font-size: 16px;
+    transition: box-shadow .25s ease-in-out, background-color .25s ease-in-out;
+    background-color: rgba(255,255,255,0.10);
+    &:hover {
+        box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+        background-color: white;
+    }
+}
 .frozen {
     box-shadow: 0px 0px 20px 2px #20dffe inset;
 }
 
+.config-open{ 
+    height: 80%;
+    width: 100%;
+    max-width: min(100%, 400px);
+}
+.other-plates {
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.available-plate {
+    padding: 4px;
+    align-items: center;
+    display: flex;
+    i {
+        font-size: 20px;
+        margin-left: 4px;
+    }
+}
 // PC adaptation
 @media(min-width: 400px) {
     :host {

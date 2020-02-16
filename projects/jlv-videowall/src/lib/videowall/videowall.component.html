@@ -5,7 +5,18 @@
             [ngStyle]="{'background-image': 'url('+ cellInfo.image + ')'}"
             (click)="onCellClick(column, row, cellInfo)"
             [ngClass]="{'frozen': cellInfo.frozenImage}">
-            <span class="plate" (click)="onPlateClick(column, row, cellInfo); $event.stopPropagation()" [ngClass]="{'frozen': cellInfo.frozenPlate}"><i class="fas fa-cog"></i>{{cellInfo.currentPlate }}</span>
+            <div class="plate" [@openClose]="videowallComponentCellState[column][row].configOpen"  (click)="$event.stopPropagation()">
+                <span class="current-plate"  (click)="onPlateClick(column, row, cellInfo); $event.stopPropagation()" [ngClass]="{'frozen': cellInfo.frozenPlate}">
+                    <i class="fas fa-cog" (click)="onPlateConfigClick(column, row); $event.stopPropagation()"></i>{{cellInfo.currentPlate }}
+                </span>
+                <div class="other-plates" *ngIf="videowallComponentCellState[column][row].configOpen">
+                    <span *ngFor="let plateConfig of videowallConfig[column][row].plateConfig" class="available-plate">
+                        {{plateConfig.plate}}
+                        <i class="far fa-pause-circle" *ngIf="!isFrozen(plateConfig.plate, cellInfo)" (click)="onAvailablePlateClick(column, row, cellInfo, plateConfig.plate)"></i>
+                        <i class="far fa-play-circle" *ngIf="isFrozen(plateConfig.plate, cellInfo)" (click)="onAvailablePlateClick(column, row, cellInfo, plateConfig.plate)"></i>
+                    </span>
+                </div>
+            </div>
         </div>
         <ng-template #empty>
             <div class="cell"  
